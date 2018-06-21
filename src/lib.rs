@@ -6,24 +6,21 @@ use bson::Bson;
 use mongodb::{Client, ThreadedClient};
 use mongodb::db::ThreadedDatabase;
 
+static mut db : ThreadedDatabase;
+
+#[no_mangle]
+pub extern fn init_db() {
+    let client = Client::with_uri("mongodb://HDF5MetadataTest_admin:ekekek19294jdwss2k@mongodb03.nersc.gov/HDF5MetadataTest")
+    .expect("Failed on connection");
+    db = client.db("HDF5MetadataTest");
+    db.auth("HDF5MetadataTest_admin","ekekek19294jdwss2k").unwrap();
+}
+
 #[no_mangle]
 pub extern fn random_test() {
     for n in (1..4).rev() {
         println!("Hello,my ssss world! {}", n);
     }
-    let client = Client::with_uri("mongodb://HDF5MetadataTest_admin:ekekek19294jdwss2k@mongodb03.nersc.gov/HDF5MetadataTest")
-    .expect("Failed on connection");
-
-
-    let db = client.db("HDF5MetadataTest");
-
-    //db.create_user("HDF5MetadataTest_admin",
-    //  "ekekek19294jdwss2k", None).unwrap();
-    db.auth("HDF5MetadataTest_admin","ekekek19294jdwss2k").unwrap();
-
-    //let success = db.list_collections(None).unwrap();
-    //println!("{:?}", success);
-    //db.create_collection("movie", None).unwrap();
     let coll = db.collection("abcde");
 
     coll.insert_one(doc!{ "title" => "Back to the Future" }, None).unwrap();
