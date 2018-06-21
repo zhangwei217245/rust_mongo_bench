@@ -8,10 +8,10 @@ use std::collections::HashMap;
 use std::string::String;
 use bson::Bson;
 use mongodb::{Client, ThreadedClient};
-use mongodb::db::ThreadedDatabase;
+use mongodb::db::Database;
 
 lazy_static! {
-    static ref DBMAP: ThreadedDatabase = {
+    static ref mongoDB: Database = {
         //let mut dbMap = HashMap::new();
         let client = Client::with_uri("mongodb://HDF5MetadataTest_admin:ekekek19294jdwss2k@mongodb03.nersc.gov/HDF5MetadataTest")
         .expect("Failed on connection");
@@ -24,7 +24,7 @@ lazy_static! {
 
 #[no_mangle]
 pub extern fn init_db() {
-    let coll = DBMAP.collection("abcde");
+    let coll = mongoDB.collection("abcde");
 }
 
 #[no_mangle]
@@ -32,9 +32,8 @@ pub extern fn random_test() {
     for n in (1..4).rev() {
         println!("Hello,my ssss world! {}", n);
     }
-    let db_key = String::from("db");
-    let db = DBMAP.get(&db_key);
-    let coll = db.collection("abcde");
+    
+    let coll = mongoDB.collection("abcde");
 
     coll.insert_one(doc!{ "title" => "Back to the Future" }, None).unwrap();
     let doc = doc! {
