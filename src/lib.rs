@@ -5,7 +5,7 @@ extern crate mongodb;
 extern crate lazy_static;
 
 use std::collections::HashMap;
-use std::string:String;
+use std::string::String;
 use bson::Bson;
 use mongodb::{Client, ThreadedClient};
 use mongodb::db::ThreadedDatabase;
