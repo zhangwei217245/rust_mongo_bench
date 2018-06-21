@@ -7,7 +7,7 @@ use bson::Bson;
 use mongodb::{Client, ThreadedClient};
 use mongodb::db::ThreadedDatabase;
 
-static mut dbMap : HashMap.new();
+static mut dbMap : HashMap = HashMap.new();
 
 #[no_mangle]
 pub extern fn init_db() {
