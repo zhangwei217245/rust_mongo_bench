@@ -11,7 +11,7 @@ use mongodb::{Client, ThreadedClient};
 use mongodb::db::{Database, ThreadedDatabase};
 
 lazy_static! {
-    static ref mongoDB: Database = {
+    static ref MONGO_DB: Database = {
         //let mut dbMap = HashMap::new();
         let client = Client::with_uri("mongodb://HDF5MetadataTest_admin:ekekek19294jdwss2k@mongodb03.nersc.gov/HDF5MetadataTest")
         .expect("Failed on connection");
@@ -24,7 +24,7 @@ lazy_static! {
 
 #[no_mangle]
 pub extern fn init_db() {
-    let coll = mongoDB.collection("abcde");
+    let _coll = MONGO_DB.collection("abcde");
 }
 
 #[no_mangle]
@@ -33,7 +33,7 @@ pub extern fn random_test() {
         println!("Hello,my ssss world! {}", n);
     }
     
-    let coll = mongoDB.collection("abcde");
+    let coll = MONGO_DB.collection("abcde");
 
     coll.insert_one(doc!{ "title" => "Back to the Future" }, None).unwrap();
     let doc = doc! {
