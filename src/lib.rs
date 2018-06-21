@@ -4,11 +4,11 @@ extern crate mongodb;
 #[macro_use]
 extern crate lazy_static;
 
-use std::collections::HashMap;
-use std::string::String;
+// use std::collections::HashMap;
+// use std::string::String;
 use bson::Bson;
 use mongodb::{Client, ThreadedClient};
-use mongodb::db::Database;
+use mongodb::db::{Database, ThreadedDatabase};
 
 lazy_static! {
     static ref mongoDB: Database = {
