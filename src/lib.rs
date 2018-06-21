@@ -11,20 +11,20 @@ use mongodb::{Client, ThreadedClient};
 use mongodb::db::ThreadedDatabase;
 
 lazy_static! {
-    static ref DBMAP: HashMap<String, ThreadedDatabase> = {
-        let mut dbMap = HashMap::new();
+    static ref DBMAP: ThreadedDatabase = {
+        //let mut dbMap = HashMap::new();
         let client = Client::with_uri("mongodb://HDF5MetadataTest_admin:ekekek19294jdwss2k@mongodb03.nersc.gov/HDF5MetadataTest")
         .expect("Failed on connection");
         let db = client.db("HDF5MetadataTest");
         db.auth("HDF5MetadataTest_admin","ekekek19294jdwss2k").unwrap();
-        dbMap.insert(String::from("db"), db);
-        dbMap
+        //dbMap.insert(String::from("db"), &db);
+        db
     };
 }
 
 #[no_mangle]
 pub extern fn init_db() {
-    DBMAP.get(String::from("db")).unwrap();
+    let coll = DBMAP.collection("abcde");
 }
 
 #[no_mangle]
