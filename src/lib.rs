@@ -5,12 +5,13 @@ extern crate mongodb;
 extern crate lazy_static;
 
 use std::collections::HashMap;
+use std::string:String;
 use bson::Bson;
 use mongodb::{Client, ThreadedClient};
 use mongodb::db::ThreadedDatabase;
 
 lazy_static! {
-    static ref DBMAP: HashMap<u32, &'static str> = {
+    static ref DBMAP: HashMap<String, ThreadedDatabase> = {
         let mut dbMap = HashMap::new();
         let client = Client::with_uri("mongodb://HDF5MetadataTest_admin:ekekek19294jdwss2k@mongodb03.nersc.gov/HDF5MetadataTest")
         .expect("Failed on connection");
