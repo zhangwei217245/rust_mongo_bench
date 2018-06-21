@@ -7,10 +7,11 @@ use bson::Bson;
 use mongodb::{Client, ThreadedClient};
 use mongodb::db::ThreadedDatabase;
 
-static mut dbMap = HashMap::new();
+static mut dbMap ;
 
 #[no_mangle]
 pub extern fn init_db() {
+    dbMap = HashMap::new();
     let client = Client::with_uri("mongodb://HDF5MetadataTest_admin:ekekek19294jdwss2k@mongodb03.nersc.gov/HDF5MetadataTest")
     .expect("Failed on connection");
     let db = client.db("HDF5MetadataTest");
