@@ -44,8 +44,8 @@ lazy_static! {
 #[no_mangle]
 pub extern fn init_db() -> i64 {
     let _coll = MONGO_COLL;
-    let query_doc = doc!{};
-    _coll.count(query_doc, None).ok().unwrap()
+    // let query_doc = doc!{};
+    // _coll.count(query_doc, None).ok().unwrap()
 }
 
 #[no_mangle]
