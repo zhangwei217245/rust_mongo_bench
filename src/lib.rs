@@ -9,7 +9,7 @@ extern crate lazy_static;
 extern crate libc;
 
 
-use std::ffi::CString;
+use std::ffi::CStr;
  
 use libc::c_char;
 use bson::Bson;
@@ -49,10 +49,10 @@ pub extern fn init_db() -> i64 {
 pub extern "C" fn importing_json_doc_to_db (json_str: *const c_char) -> i32 {
     let c_str = unsafe {
         assert!(!json_str.is_null());
-        CString::from_ptr(json_str);
+        CStr::from_ptr(json_str)
     };
-    let r_str = c_str.to_str().ok().unwrap();
-    r_str.chars().count()
+    let r_str = c_str.to_str().unwrap().to_owned();
+    r_str.len() as i32
 }
 
 #[no_mangle]
