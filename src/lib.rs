@@ -54,7 +54,7 @@ pub extern "C" fn importing_json_doc_to_db (json_str: *const c_char) -> i32 {
         assert!(!json_str.is_null());
         CStr::from_ptr(json_str);
     };
-    let r_str = c_str.to_str().unwrap();
+    let r_str = c_str.to_str().ok().unwrap();
     r_str.chars().count()
 }
 
