@@ -42,7 +42,7 @@ lazy_static! {
 }
 
 #[no_mangle]
-pub extern fn init_db -> i64() {
+pub extern fn init_db() -> i64 {
     let _coll = MONGO_COLL;
     _coll.count(doc!{}, None).ok().expect("failed to initiate collection.");
 }
