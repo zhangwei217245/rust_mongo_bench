@@ -16,6 +16,7 @@ use mongodb::{Client, ThreadedClient};
 use mongodb::db::{ThreadedDatabase};
 use mongodb::coll::Collection;
 use serde_json::Value;
+use mongodb::CommandResult;
 
 // lazy_static! {
 //     static ref MONGO_DB: Database = {
