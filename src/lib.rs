@@ -32,10 +32,20 @@ lazy_static! {
     static ref MONGO_COLL: Collection = {
         let client = Client::with_uri("mongodb://HDF5MetadataTest_admin:ekekek19294jdwss2k@mongodb03.nersc.gov/HDF5MetadataTest")
         .expect("Failed on connection");
+        client.add_completion_hook(log_query_duration).unwrap();
         let db = client.db("HDF5MetadataTest");
         db.auth("HDF5MetadataTest_admin","ekekek19294jdwss2k").unwrap();
         db.collection("abcde")
     };
+}
+
+fn log_query_duration(client: Client, command_result: &CommandResult) {
+    match command_result {
+        &CommandResult::Success { duration, .. } => {
+            println!("Command took {} nanoseconds.", duration);
+        },
+        _ => println!("Failed to execute command."),
+    }
 }
 
 #[no_mangle]
@@ -57,9 +67,11 @@ pub extern "C" fn importing_json_doc_to_db (json_str: *const c_char) -> i64 {
     let json : Value = serde_json::from_str(&r_str).unwrap();
     let bson : Bson = json.into();
     let doc = bson.as_document().unwrap();
-    MONGO_COLL.insert_one(doc.clone(), None)
+    for number in (0..1000000) { // inserting 1M documents. 
+        MONGO_COLL.insert_one(doc.clone(), None)
         .ok().expect("Failed to insert document.");
-
+    }
+    
     let db_count = MONGO_COLL.count(Some(doc!{}), None).unwrap();
     println!("db count = {}", db_count);
     db_count
