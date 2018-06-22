@@ -55,8 +55,8 @@ pub extern "C" fn importing_json_doc_to_db (json_str: *const c_char) -> i64 {
     let r_str = c_str.to_str().unwrap().to_owned();
     let string_count = r_str.len() as i32;
     let json : Value = serde_json::from_str(&r_str).unwrap();
-    let bson : Bson =json.into();
-    let doc = bson.as_document();
+    let bson : Bson = json.into();
+    let doc = bson.as_document().unwrap();
     MONGO_COLL.insert_one(doc.clone(), None)
         .ok().expect("Failed to insert document.");
 
