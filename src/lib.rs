@@ -15,7 +15,7 @@ use bson::Bson;
 use mongodb::{Client, ThreadedClient};
 use mongodb::db::{ThreadedDatabase};
 use mongodb::coll::Collection;
-use serde_json::{Value, Error};
+// use serde_json::{Value, Error};
 
 // lazy_static! {
 //     static ref MONGO_DB: Database = {
@@ -54,7 +54,7 @@ pub extern "C" fn importing_json_doc_to_db (json_str: *const c_char) -> i64 {
     };
     let r_str = c_str.to_str().unwrap().to_owned();
     let string_count = r_str.len() as i32;
-    let json : V = serde_json::from_str(data).unwrap();
+    let json = serde_json::from_str(&r_str).unwrap();
     let doc=json.into().as_document();
     MONGO_COLL.insert_one(doc.clone(), None)
         .ok().expect("Failed to insert document.");
