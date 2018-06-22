@@ -10,7 +10,7 @@ extern crate libc;
 
 
 use std::ffi::CStr;
-use std::str;
+// use std::str;
 use libc::c_char;
 use bson::Bson;
 use mongodb::{Client, ThreadedClient};
