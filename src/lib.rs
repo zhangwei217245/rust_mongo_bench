@@ -14,7 +14,7 @@ use std::ffi::CStr;
 use libc::c_char;
 use bson::Bson;
 use mongodb::{Client, ThreadedClient};
-// use mongodb::db::{Database, ThreadedDatabase};
+use mongodb::db::{Database, ThreadedDatabase};
 use mongodb::coll::Collection;
 // use serde_json::{Value, Error};
 
