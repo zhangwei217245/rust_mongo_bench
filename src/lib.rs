@@ -64,7 +64,8 @@ pub extern fn random_test() {
         println!("Hello,my ssss world! {}", n);
     }
     
-    let coll = MONGO_DB.collection("abcde");
+    // let coll = MONGO_DB.collection("abcde");
+    let coll = MONGO_COLL;
 
     coll.insert_one(doc!{ "title" => "Back to the Future" }, None).unwrap();
     let doc = doc! {
