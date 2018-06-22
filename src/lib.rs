@@ -50,7 +50,7 @@ pub extern fn init_db() -> i64 {
 #[no_mangle]
 pub extern "C" fn importing_json_doc_to_db (json_str: *const c_char) -> i32 {
     let c_str = unsafe {
-        assert!(!s.is_null());
+        assert!(!json_str.is_null());
         CStr::from_ptr(json_str);
     };
     let r_str = c_str.to_str().unwrap();
