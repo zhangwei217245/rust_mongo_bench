@@ -6,6 +6,7 @@ authors = ["zhangwei217245 <zhangwei217245@gmail.com>"]
 [dependencies]
 bson = "0.10.0"
 mongodb = "0.3.7"
+serde_json = "1.0"
 lazy_static = "1.0"
 
 
