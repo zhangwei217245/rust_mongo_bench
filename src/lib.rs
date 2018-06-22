@@ -60,22 +60,19 @@ pub extern fn random_test() {
     for n in (1..4).rev() {
         println!("Hello,my ssss world! {}", n);
     }
-    
-    // let coll = MONGO_DB.collection("abcde");
-    let coll = MONGO_COLL;
 
-    coll.insert_one(doc!{ "title" => "Back to the Future" }, None).unwrap();
+    MONGO_COLL.insert_one(doc!{ "title" => "Back to the Future" }, None).unwrap();
     let doc = doc! {
         "title": "Jaws",
         "array": [ 1, 2, 3 ],
     };
         // Insert document into 'test.movies' collection
 
-    coll.insert_one(doc.clone(), None)
+    MONGO_COLL.insert_one(doc.clone(), None)
         .ok().expect("Failed to insert document.");
 
     // Find the document and receive a cursor
-    let mut cursor = coll.find(Some(doc.clone()), None)
+    let mut cursor = MONGO_COLL.find(Some(doc.clone()), None)
         .ok().expect("Failed to execute find.");
 
     let item = cursor.next();
