@@ -12,11 +12,10 @@ extern crate libc;
 use std::ffi::CStr;
 use libc::c_char;
 use bson::Bson;
-use mongodb::{Client, ThreadedClient};
+use mongodb::{Client, ThreadedClient, CommandResult};
 use mongodb::db::{ThreadedDatabase};
 use mongodb::coll::Collection;
 use serde_json::Value;
-use mongodb::CommandResult;
 
 // lazy_static! {
 //     static ref MONGO_DB: Database = {
