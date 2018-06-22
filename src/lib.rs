@@ -2,6 +2,7 @@
 extern crate bson;
 extern crate mongodb;
 extern crate serde_json;
+extern crate rustc_serialize;
 
 
 #[macro_use]
@@ -10,12 +11,12 @@ extern crate libc;
 
 
 use std::ffi::CStr;
- 
 use libc::c_char;
 use bson::Bson;
 use mongodb::{Client, ThreadedClient};
 use mongodb::db::{ThreadedDatabase};
 use mongodb::coll::Collection;
+use rustc_serialize::json::Json;
 // use serde_json::{Value, Error};
 
 // lazy_static! {
@@ -42,7 +43,9 @@ lazy_static! {
 #[no_mangle]
 pub extern fn init_db() -> i64 {
     let query_doc = doc!{};
-    MONGO_COLL.count(Some(query_doc), None).unwrap()
+    let db_count = MONGO_COLL.count(Some(query_doc), None).unwrap();
+    println!("db count = {}", db_count);
+    db_count
 }
 
 #[no_mangle]
@@ -52,7 +55,15 @@ pub extern "C" fn importing_json_doc_to_db (json_str: *const c_char) -> i32 {
         CStr::from_ptr(json_str)
     };
     let r_str = c_str.to_str().unwrap().to_owned();
-    r_str.len() as i32
+    let string_count = r_str.len() as i32;
+    let json = Json::from_str(r_str).unwrap();
+    let doc=Bson::from_json(json).as_document();
+    MONGO_COLL.insert_one(doc.clone(), None)
+        .ok().expect("Failed to insert document.");
+        
+    let db_count = MONGO_COLL.count(Some(doc!{}), None).unwrap();
+    println!("db count = {}", db_count);
+    db_count
 }
 
 #[no_mangle]
