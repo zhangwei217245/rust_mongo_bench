@@ -30,7 +30,7 @@ use serde_json::Value;
 
 lazy_static! {
     static ref MONGO_COLL: Collection = {
-        let client = Client::with_uri("mongodb://HDF5MetadataTest_admin:ekekek19294jdwss2k@mongodb03.nersc.gov/HDF5MetadataTest")
+        let mut client = Client::with_uri("mongodb://HDF5MetadataTest_admin:ekekek19294jdwss2k@mongodb03.nersc.gov/HDF5MetadataTest")
         .expect("Failed on connection");
         client.add_completion_hook(log_query_duration).unwrap();
         let db = client.db("HDF5MetadataTest");
@@ -39,7 +39,7 @@ lazy_static! {
     };
 }
 
-fn log_query_duration(client: Client, command_result: &CommandResult) {
+fn log_query_duration(_client: Client, command_result: &CommandResult) {
     match command_result {
         &CommandResult::Success { duration, .. } => {
             println!("Command took {} nanoseconds.", duration);
