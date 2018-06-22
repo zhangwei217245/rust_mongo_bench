@@ -2,7 +2,6 @@
 extern crate bson;
 extern crate mongodb;
 extern crate serde_json;
-extern crate rustc_serialize;
 
 
 #[macro_use]
@@ -16,8 +15,7 @@ use bson::Bson;
 use mongodb::{Client, ThreadedClient};
 use mongodb::db::{ThreadedDatabase};
 use mongodb::coll::Collection;
-use rustc_serialize::json::Json;
-// use serde_json::{Value, Error};
+use serde_json::{Value, Error};
 
 // lazy_static! {
 //     static ref MONGO_DB: Database = {
@@ -49,15 +47,15 @@ pub extern fn init_db() -> i64 {
 }
 
 #[no_mangle]
-pub extern "C" fn importing_json_doc_to_db (json_str: *const c_char) -> i32 {
+pub extern "C" fn importing_json_doc_to_db (json_str: *const c_char) -> i64 {
     let c_str = unsafe {
         assert!(!json_str.is_null());
         CStr::from_ptr(json_str)
     };
     let r_str = c_str.to_str().unwrap().to_owned();
     let string_count = r_str.len() as i32;
-    let json = Json::from_str(&r_str).unwrap();
-    let doc=Bson::from_json(&json).as_document();
+    let json : V = serde_json::from_str(data)?;
+    let doc=json.into().as_document();
     MONGO_COLL.insert_one(doc.clone(), None)
         .ok().expect("Failed to insert document.");
 
