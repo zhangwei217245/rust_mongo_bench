@@ -20,7 +20,6 @@ use mongodb::coll::Collection;
 
 // lazy_static! {
 //     static ref MONGO_DB: Database = {
-//         //let mut dbMap = HashMap::new();
 //         let client = Client::with_uri("mongodb://HDF5MetadataTest_admin:ekekek19294jdwss2k@mongodb03.nersc.gov/HDF5MetadataTest")
 //         .expect("Failed on connection");
 //         let db = client.db("HDF5MetadataTest");
@@ -32,12 +31,11 @@ use mongodb::coll::Collection;
 
 lazy_static! {
     static ref MONGO_COLL: Collection = {
-        //let mut dbMap = HashMap::new();
         let client = Client::with_uri("mongodb://HDF5MetadataTest_admin:ekekek19294jdwss2k@mongodb03.nersc.gov/HDF5MetadataTest")
         .expect("Failed on connection");
         let db = client.db("HDF5MetadataTest");
         db.auth("HDF5MetadataTest_admin","ekekek19294jdwss2k").unwrap();
-        db.collection("abcde");
+        db.collection("abcde")
     };
 }
 
