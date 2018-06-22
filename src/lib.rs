@@ -67,7 +67,7 @@ pub extern "C" fn importing_json_doc_to_db (json_str: *const c_char) -> i64 {
     let json : Value = serde_json::from_str(&r_str).unwrap();
     let bson : Bson = json.into();
     let doc = bson.as_document().unwrap();
-    for number in 0..1000000 { // inserting 1M documents. 
+    for 1000000.times { // inserting 1M documents. 
         MONGO_COLL.insert_one(doc.clone(), None)
         .ok().expect("Failed to insert document.");
     }
