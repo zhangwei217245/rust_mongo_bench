@@ -9,12 +9,13 @@ extern crate lazy_static;
 extern crate libc;
 
 
-use std::ffi::CStr;
+use std::ffi::CString;
 // use std::str;
+use 
 use libc::c_char;
 use bson::Bson;
 use mongodb::{Client, ThreadedClient};
-use mongodb::db::{Database, ThreadedDatabase};
+use mongodb::db::{ThreadedDatabase};
 use mongodb::coll::Collection;
 // use serde_json::{Value, Error};
 
@@ -42,16 +43,15 @@ lazy_static! {
 #[no_mangle]
 pub extern fn init_db() -> i64 {
     let _coll = MONGO_COLL;
-    // let query_doc = doc!{};
-    // _coll.count(query_doc, None).ok().unwrap()
-    10000
+    let query_doc = doc!{};
+    _coll.count(query_doc, None).ok().unwrap()
 }
 
 #[no_mangle]
 pub extern "C" fn importing_json_doc_to_db (json_str: *const c_char) -> i32 {
     let c_str = unsafe {
         assert!(!json_str.is_null());
-        CStr::from_ptr(json_str);
+        CString::from_ptr(json_str);
     };
     let r_str = c_str.to_str().ok().unwrap();
     r_str.chars().count()
