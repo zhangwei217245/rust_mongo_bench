@@ -119,7 +119,7 @@ pub extern "C" fn get_all_doc_count() -> i64 {
 pub extern "C" fn importing_json_doc_to_db (json_str: *const c_char) -> i64 {
     let doc = c_str_to_bson(json_str);
     // inserting 1M documents. if mongo is not large enough, we try to shrink this by 1/10.
-    for _x in 0..1000000 {
+    for _x in 0..100 {
         MONGO_COLL.insert_one(doc.clone(), None)
         .ok().expect("Failed to insert document.");
     }
