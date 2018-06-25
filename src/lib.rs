@@ -12,7 +12,7 @@ extern crate libc;
 use std::ffi::CStr;
 use libc::c_char;
 use bson::Bson;
-use bson::ordered::OrderedDocument;
+use bson::Document;
 use mongodb::{Client, ThreadedClient, CommandResult};
 use mongodb::db::{ThreadedDatabase};
 use mongodb::cursor::Cursor;
@@ -42,7 +42,7 @@ fn log_query_duration(_client: Client, command_result: &CommandResult) {
     }
 }
 
-fn c_str_to_bson(c_string_ptr: *const c_char) -> &'a OrderedDocument{
+fn c_str_to_bson(c_string_ptr: *const c_char) -> Option<&Document>{
     let c_str = unsafe {
         assert!(!c_string_ptr.is_null());
         CStr::from_ptr(c_string_ptr)
@@ -51,7 +51,7 @@ fn c_str_to_bson(c_string_ptr: *const c_char) -> &'a OrderedDocument{
     // let string_count = r_str.len() as i32;
     let json : Value = serde_json::from_str(&r_str).unwrap();
     let bson : Bson = json.into();
-    bson.as_document().unwrap()
+    bson.as_document();
 }
 
 #[no_mangle]
@@ -73,17 +73,17 @@ pub extern "C" fn clear_all_indexes() {
 }
 #[no_mangle]
 pub extern "C" fn create_index(index_key: *const c_char) {
-    let doc = c_str_to_bson(index_key);
+    let doc = c_str_to_bson(index_key).unwrap();
     MONGO_COLL.create_index(doc.clone(), None).unwrap();
 }
 #[no_mangle]
 pub extern "C" fn query_count(query_condition: *const c_char) -> i64 {
-    let doc = c_str_to_bson(query_condition);
+    let doc = c_str_to_bson(query_condition).unwrap();
     MONGO_COLL.count(Some(doc), None).unwrap()
 }
 
 fn query_result_set(query_condition: *const c_char) -> Cursor {
-    let doc = c_str_to_bson(query_condition);
+    let doc = c_str_to_bson(query_condition).unwrap();
     MONGO_COLL.find(Some(doc), None).unwrap();
 }
 
@@ -117,7 +117,7 @@ pub extern "C" fn get_all_doc_count() -> i64 {
 
 #[no_mangle]
 pub extern "C" fn importing_json_doc_to_db (json_str: *const c_char) -> i64 {
-    let doc = c_str_to_bson(json_str);
+    let doc = c_str_to_bson(json_str).unwrap();
     // inserting 1M documents. if mongo is not large enough, we try to shrink this by 1/10.
     for _x in 0..1000000 {
         MONGO_COLL.insert_one(doc.clone(), None)
