@@ -74,7 +74,7 @@ pub extern "C" fn clear_all_indexes() {
 #[no_mangle]
 pub extern "C" fn create_index(index_key: *const c_char) {
     let doc = c_str_to_bson(index_key);
-    MONGO_COLL.create_index(*doc, None).unwrap();
+    MONGO_COLL.create_index(doc.clone(), None).unwrap();
 }
 #[no_mangle]
 pub extern "C" fn query_count(query_condition: *const c_char) -> i64 {
