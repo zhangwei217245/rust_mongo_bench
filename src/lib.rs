@@ -112,7 +112,7 @@ fn query_result_and_print(query_condition: *const c_char) {
 
 #[no_mangle]
 pub extern "C" fn get_all_doc_count() -> i64 {
-    MONGO_COLL.count(Some(doc!{}), None).unwrap();
+    MONGO_COLL.count(Some(doc!{}), None).unwrap()
 }
 
 #[no_mangle]
@@ -123,6 +123,9 @@ pub extern "C" fn importing_json_doc_to_db (json_str: *const c_char) -> i64 {
         MONGO_COLL.insert_one(doc, None)
         .ok().expect("Failed to insert document.");
     }
+    let all_count = get_all_doc_count();
+    println!("================ Total # of document is : {} ================", all_count);
+    all_count
 }
 
 #[no_mangle]
