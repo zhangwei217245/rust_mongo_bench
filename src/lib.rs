@@ -35,7 +35,7 @@ lazy_static! {
 
 fn log_query_duration(_client: Client, command_result: &CommandResult) {
     match command_result {
-        &CommandResult::Success { duration, ref reply, ref command_name, .. } => {
+        &CommandResult::Success { duration, reply:_, ref command_name, .. } => {
             println!("Command {} took {} nanoseconds.", command_name, duration);
         },
         _ => println!("Failed to execute command."),
