@@ -64,7 +64,7 @@ pub extern fn init_db() -> i64 {
 
 #[no_mangle]
 pub extern "C" fn clear_all_docs() -> i64 {
-    MONGO_COLL.delete_many(Some(doc!{}), None).unwrap().deleted_count as i64
+    MONGO_COLL.delete_many(doc!{}, None).unwrap().deleted_count as i64
 }
 
 #[no_mangle]
@@ -74,7 +74,7 @@ pub extern "C" fn clear_all_indexes() {
 #[no_mangle]
 pub extern "C" fn create_index(index_key: *const c_char) {
     let doc = c_str_to_bson(index_key);
-    MONGO_COLL.create_index(Some(doc), None).unwrap();
+    MONGO_COLL.create_index(doc, None).unwrap();
 }
 #[no_mangle]
 pub extern "C" fn query_count(query_condition: *const c_char) -> i64 {
