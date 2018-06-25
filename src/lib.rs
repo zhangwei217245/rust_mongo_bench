@@ -79,7 +79,7 @@ pub extern "C" fn create_index(index_key: *const c_char) {
 #[no_mangle]
 pub extern "C" fn query_count(query_condition: *const c_char) -> i64 {
     let doc = c_str_to_bson(query_condition);
-    MONGO_COLL.count(Some(&doc), None).unwrap()
+    MONGO_COLL.count(Some(doc), None).unwrap()
 }
 
 fn query_result_set(query_condition: *const c_char) -> Cursor {
