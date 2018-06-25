@@ -42,7 +42,7 @@ fn log_query_duration(_client: Client, command_result: &CommandResult) {
     }
 }
 
-fn c_str_to_bson(c_string_ptr: *const c_char) -> &OrderedDocument{
+fn c_str_to_bson(c_string_ptr: *const c_char) -> &'a OrderedDocument{
     let c_str = unsafe {
         assert!(!c_string_ptr.is_null());
         CStr::from_ptr(c_string_ptr)
