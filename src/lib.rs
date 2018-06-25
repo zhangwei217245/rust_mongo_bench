@@ -84,7 +84,7 @@ pub extern "C" fn query_count(query_condition: *const c_char) -> i64 {
 
 fn query_result_set(query_condition: *const c_char) -> Cursor {
     let doc = c_str_to_bson(query_condition);
-    MONGO_COLL.find(Some(doc), None).unwrap();
+    MONGO_COLL.find(Some(doc), None).unwrap()
 }
 
 #[no_mangle]
