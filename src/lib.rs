@@ -96,7 +96,7 @@ pub extern "C" fn query_result_count(query_condition: *const c_char) -> i64 {
 #[no_mangle]
 fn query_result_and_print(query_condition: *const c_char) {
     let result_set = query_result_set(query_condition);
-    while (result_set.has_next().unwrap()) {
+    while result_set.has_next().unwrap() {
         let item = result_set.next();
 
         match item {
