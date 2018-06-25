@@ -51,7 +51,7 @@ fn c_str_to_bson(c_string_ptr: *const c_char) -> Document{
     // let string_count = r_str.len() as i32;
     let json : Value = serde_json::from_str(&r_str).unwrap();
     let bson : Bson = json.into();
-    bson.as_document().unwrap().clone();
+    bson.as_document().unwrap().clone()
 }
 
 #[no_mangle]
