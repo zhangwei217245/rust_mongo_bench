@@ -42,7 +42,7 @@ fn log_query_duration(_client: Client, command_result: &CommandResult) {
     }
 }
 
-fn c_str_to_bson(c_string_ptr: *const c_char) -> OrderedDocument{
+fn c_str_to_bson(c_string_ptr: *const c_char) -> &OrderedDocument{
     let c_str = unsafe {
         assert!(!c_string_ptr.is_null());
         CStr::from_ptr(c_string_ptr)
@@ -74,7 +74,7 @@ pub extern "C" fn clear_all_indexes() {
 #[no_mangle]
 pub extern "C" fn create_index(index_key: *const c_char) {
     let doc = c_str_to_bson(index_key);
-    MONGO_COLL.create_index(doc, None).unwrap();
+    MONGO_COLL.create_index(*doc, None).unwrap();
 }
 #[no_mangle]
 pub extern "C" fn query_count(query_condition: *const c_char) -> i64 {
