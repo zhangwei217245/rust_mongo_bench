@@ -71,6 +71,12 @@ pub extern "C" fn clear_all_docs() -> i64 {
 pub extern "C" fn clear_all_indexes() {
     MONGO_COLL.drop_indexes().unwrap();
 }
+
+#[no_mangle]
+pub extern "C" fn drop_current_coll() {
+    MONGO_COLL.drop().unwrap;
+}
+
 #[no_mangle]
 pub extern "C" fn create_index(index_key: *const c_char) {
     let doc = c_str_to_bson(index_key);
