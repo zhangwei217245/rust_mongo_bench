@@ -74,7 +74,7 @@ pub extern "C" fn clear_all_indexes() {
 
 #[no_mangle]
 pub extern "C" fn drop_current_coll() {
-    MONGO_COLL.drop().unwrap;
+    MONGO_COLL.drop().unwrap();
 }
 
 #[no_mangle]
