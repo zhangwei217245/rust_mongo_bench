@@ -87,7 +87,7 @@ pub extern "C" fn create_index(index_key: *const c_char) {
 pub extern "C" fn create_doc_id_index() {
     MONGO_COLL.create_index(doc!{
         "h5doc_id" => 1
-    }, None);
+    }, None).unwrap();
 }
 
 #[no_mangle]
