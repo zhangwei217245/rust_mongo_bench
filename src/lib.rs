@@ -82,6 +82,14 @@ pub extern "C" fn create_index(index_key: *const c_char) {
     let doc = c_str_to_bson(index_key);
     MONGO_COLL.create_index(doc, None).unwrap();
 }
+
+#[no_mangle]
+pub extern "C" fn create_doc_id_index() {
+    MONGO_COLL.create_index(doc!{
+        "h5doc_id" => 1
+    });
+}
+
 #[no_mangle]
 pub extern "C" fn query_count(query_condition: *const c_char) -> i64 {
     let doc = c_str_to_bson(query_condition);
