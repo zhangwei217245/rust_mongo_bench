@@ -91,6 +91,13 @@ pub extern "C" fn create_doc_id_index() {
 }
 
 #[no_mangle]
+pub extern "C" fn create_dataset_name_index() {
+    MONGO_COLL.create_index(doc!{
+        "sub_objects.sub_objects.sub_objects.dataset_name" => "text"
+    }, None).unwrap();
+}
+
+#[no_mangle]
 pub extern "C" fn query_count(query_condition: *const c_char) -> i64 {
     let doc = c_str_to_bson(query_condition);
     MONGO_COLL.count(Some(doc), None).unwrap()
