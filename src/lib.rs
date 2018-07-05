@@ -93,7 +93,7 @@ pub extern "C" fn create_doc_id_index() {
 #[no_mangle]
 pub extern "C" fn create_dataset_name_index() {
     MONGO_COLL.create_index(doc!{
-        "sub_objects.sub_objects.sub_objects.dataset_name" => "text"
+        "sub_objects.sub_objects.sub_objects.dataset_name" => 1
     }, None).unwrap();
 }
 
