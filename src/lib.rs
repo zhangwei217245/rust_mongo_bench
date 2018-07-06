@@ -98,6 +98,13 @@ pub extern "C" fn create_dataset_name_index() {
 }
 
 #[no_mangle]
+pub extern "C" fn create_root_obj_path_index() {
+    MONGO_COLL.create_index(doc!{
+        "object_path" => 1
+    }, None).unwrap();
+}
+
+#[no_mangle]
 pub extern "C" fn query_count(query_condition: *const c_char) -> i64 {
     let doc = c_str_to_bson(query_condition);
     MONGO_COLL.count(Some(doc), None).unwrap()
@@ -140,7 +147,7 @@ pub extern "C" fn get_all_doc_count() -> i64 {
 pub extern "C" fn importing_json_doc_to_db (json_str: *const c_char) -> i64 {
     let mut doc = c_str_to_bson(json_str);
     // inserting 1M documents. if mongo is not large enough, we try to shrink this by 1/10.
-    for x in 0..1000000 {
+    for x in 0..1000 {
         doc.insert("h5doc_id".to_owned(), Bson::I32(x));
         MONGO_COLL.insert_one(doc.clone(), None)
         .ok().expect("Failed to insert document.");
