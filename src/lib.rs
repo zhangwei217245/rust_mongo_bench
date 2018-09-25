@@ -159,9 +159,17 @@ pub extern "C" fn get_all_doc_count() -> i64 {
 
 #[no_mangle]
 pub extern "C" fn importing_json_doc_to_db (json_str: *const c_char) -> i64 {
+    let mut doc = c_str_to_bson(json_str);    
+    MONGO_COLL.insert_one(doc.clone(), None)
+    .ok().expect("Failed to insert document.");
+    1
+}
+
+#[no_mangle]
+pub extern "C" fn importing_fake_json_docs_to_db (json_str: *const c_char, count: const i32) -> i64 {
     let mut doc = c_str_to_bson(json_str);
     // inserting 1M documents. if mongo is not large enough, we try to shrink this by 1/10.
-    for x in 0..1000 {
+    for x in 0..count {
         doc.insert("h5doc_id".to_owned(), Bson::I32(x));
         MONGO_COLL.insert_one(doc.clone(), None)
         .ok().expect("Failed to insert document.");
