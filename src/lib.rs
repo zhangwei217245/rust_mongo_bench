@@ -161,7 +161,8 @@ pub extern "C" fn get_all_doc_count() -> i64 {
 pub extern "C" fn split_sub_objects_to_db (json_str: *const c_char) -> i64 {
     let doc = c_str_to_bson(json_str);
     let key = String::from("sub_objects");
-    let array = doc.get_array(&key).unwrap().to_owned();
+    let array = doc.get_array(&key).unwrap().to_owned()
+        .map(|bson :Bson| bson.as_document().unwrap().to_owned());
     MONGO_COLL.insert_many(array, None)
     .ok().expect("Failed to insert document.");
     array.len() as i64
