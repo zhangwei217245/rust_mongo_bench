@@ -158,6 +158,13 @@ pub extern "C" fn get_all_doc_count() -> i64 {
 }
 
 #[no_mangle]
+pub extern "C" fn split_sub_objects_to_db (json_str: *const c_char) -> i64 {
+    let doc = c_str_to_bson(json_str);  
+    MONGO_COLL.insert_many(doc.get_array("sub_objects"), None)
+    .ok().expect("Failed to insert document.");
+}
+
+#[no_mangle]
 pub extern "C" fn importing_json_doc_to_db (json_str: *const c_char) -> i64 {
     let doc = c_str_to_bson(json_str);    
     MONGO_COLL.insert_one(doc.clone(), None)
