@@ -164,7 +164,7 @@ pub extern "C" fn split_sub_objects_to_db (json_str: *const c_char) -> i64 {
     let bson_vec: Vec<Bson> = doc.get_array(&key).unwrap().to_owned();
     let array : Vec<Document> = bson_vec.into_iter().map(|b| b.as_document().unwrap().to_owned()).collect();
     MONGO_COLL.insert_many(array.clone(), None)
-    .ok().expect("Failed to insert document.");
+    .ok().expect("Failed to insert many documents.");
     array.clone().len() as i64
 }
 
