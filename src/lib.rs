@@ -161,7 +161,7 @@ pub extern "C" fn get_all_doc_count() -> i64 {
 pub extern "C" fn split_sub_objects_to_db (json_str: *const c_char) -> i64 {
     let doc = c_str_to_bson(json_str);
     let key = String::from("sub_objects");
-    let bson_vec: Vec<Bson> = doc.get_array(&key).unwrap().to_owned();
+    let bson_vec: Vec<Bson> = doc.get_array(&key).unwrap().to_owned().as_mut();
     
     let array = bson_vec.iter()
         .map(|bson :Bson| bson.as_document().unwrap().to_owned()).collect();
