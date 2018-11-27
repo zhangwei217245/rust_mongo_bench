@@ -13,6 +13,7 @@ use std::ffi::CStr;
 use libc::c_char;
 use bson::Bson;
 use bson::Document;
+use mongodb::ordered::OrderedDocument;
 use mongodb::{Client, ThreadedClient, CommandResult};
 use mongodb::db::{ThreadedDatabase};
 use mongodb::cursor::Cursor;
@@ -42,12 +43,16 @@ fn log_query_duration(_client: Client, command_result: &CommandResult) {
     }
 }
 
-fn c_str_to_bson(c_string_ptr: *const c_char) -> Document{
+fn c_str_to_r_str(c_string_ptr: *const c_char) -> String {
     let c_str = unsafe {
         assert!(!c_string_ptr.is_null());
         CStr::from_ptr(c_string_ptr)
     };
-    let r_str = c_str.to_str().unwrap().to_owned();
+    c_str.to_str().unwrap().to_owned()
+}
+
+fn c_str_to_bson(c_string_ptr: *const c_char) -> Document{
+    let r_str = c_str_to_r_str(c_string_ptr);
     // let string_count = r_str.len() as i32;
     let json : Value = serde_json::from_str(&r_str).unwrap();
     let bson : Bson = json.into();
@@ -120,7 +125,9 @@ pub extern "C" fn create_lv3_obj_path_index(){
 
 #[no_mangle]
 pub extern "C" fn create_any_index(index_str: *const c_char){
-    let doc = c_str_to_bson(index_str);
+    let attr_name = c_str_to_r_str(index_str);
+    let doc = OrderedDocument.new();
+    doc.insert(attr_name, 1);
     MONGO_COLL.create_index(doc, None).unwrap();
 }
 
