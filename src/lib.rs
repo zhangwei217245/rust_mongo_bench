@@ -126,7 +126,7 @@ pub extern "C" fn create_lv3_obj_path_index(){
 #[no_mangle]
 pub extern "C" fn create_any_index(index_str: *const c_char){
     let attr_name = c_str_to_r_str(index_str);
-    let doc = OrderedDocument.new();
+    let doc = OrderedDocument::new();
     doc.insert(attr_name, 1);
     MONGO_COLL.create_index(doc, None).unwrap();
 }
