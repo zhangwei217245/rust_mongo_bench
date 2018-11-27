@@ -119,9 +119,9 @@ pub extern "C" fn create_lv3_obj_path_index(){
 }
 
 #[no_mangle]
-pub extern "C" fn create_any_index(index_str: *const c_char) -> i64{
+pub extern "C" fn create_any_index(index_str: *const c_char){
     let doc = c_str_to_bson(index_str);
-    MONGO_COLL.create_index(Some(doc), None).unwrap();
+    MONGO_COLL.create_index(doc, None).unwrap();
 }
 
 #[no_mangle]
